@@ -4,14 +4,19 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import callGraphTrace.TraceData;
+
 public class FailTest {
 
 	public static void main(String[] args) 
 	{
+		TraceData.insert("void main(java.lang.String [])");
 		new FailTest().foo();
 	}
 	public void foo()  
 	{
+		TraceData.insert("void foo()");
+		
 		Collection<Collection<Integer>> set_container = new HashSet<Collection<Integer>>();
 		Collection<Iterator<Integer>> iter_container = new HashSet<Iterator<Integer>>();
 		for(int i = 0; i<10; i++)
