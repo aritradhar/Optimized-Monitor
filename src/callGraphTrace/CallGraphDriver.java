@@ -20,12 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import soot.PackManager;
-import soot.Scene;
-import soot.SootClass;
 import soot.SootMethod;
 import soot.Transform;
 import soot.options.Options;
-import soot.util.Chain;
 
 
 public class CallGraphDriver 

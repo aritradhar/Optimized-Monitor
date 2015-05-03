@@ -36,7 +36,7 @@ public class CallGraphTracer extends SceneTransformer
 	/* (non-Javadoc)
 	 * @see soot.SceneTransformer#internalTransform(java.lang.String, java.util.Map)
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected void internalTransform(String arg0, Map arg1) 
 	{

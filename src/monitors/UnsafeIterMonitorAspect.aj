@@ -52,7 +52,7 @@ class UnsafeIteratorMonitor_1 implements Cloneable
 		dfa_name=new String("");
 
 	}
-	synchronized public final void create(Collection c,Iterator i) {
+	synchronized public final void create(Collection<?> c,Iterator<?> i) {
 		event = 1;
 
 		switch(state) {
@@ -86,7 +86,7 @@ class UnsafeIteratorMonitor_1 implements Cloneable
 
 		MOP_match = state == 3;
 	}
-	synchronized public final void updatesource(Collection c) {
+	synchronized public final void updatesource(Collection<?> c) {
 		event = 2;
 
 		switch(state) {
@@ -120,7 +120,7 @@ class UnsafeIteratorMonitor_1 implements Cloneable
 
 		MOP_match = state == 3;
 	}
-	synchronized public final void next(Iterator i) {
+	synchronized public final void next(Iterator<?> i) {
 		event = 3;
 		
 		switch(state) {

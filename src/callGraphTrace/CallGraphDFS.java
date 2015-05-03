@@ -21,13 +21,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Queue;
 
-import soot.Body;
+
 import soot.MethodOrMethodContext;
-import soot.PatchingChain;
-import soot.SootClass;
 import soot.SootMethod;
-import soot.Unit;
-import soot.jimple.Stmt;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Sources;
 import soot.jimple.toolkits.callgraph.Targets;
