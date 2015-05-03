@@ -6,7 +6,12 @@ import java.util.Iterator;
 
 public class FailTest {
 
-	public static void main(String[] args)  {
+	public static void main(String[] args) 
+	{
+		new FailTest().foo();
+	}
+	public void foo()  
+	{
 		Collection<Collection<Integer>> set_container = new HashSet<Collection<Integer>>();
 		Collection<Iterator<Integer>> iter_container = new HashSet<Iterator<Integer>>();
 		for(int i = 0; i<10; i++)

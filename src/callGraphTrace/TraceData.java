@@ -26,7 +26,8 @@ public class TraceData
 	
 	public static void insert(String methodName)
 	{
-		int id = methodIdMap.size() + 1;
+		int id = methodIdMap.containsKey(methodName) ? methodIdMap.get(methodName) : methodIdMap.size() + 1;
+		
 		if(!methodIdMap.containsKey(methodName))
 			methodIdMap.put(methodName, id);
 		

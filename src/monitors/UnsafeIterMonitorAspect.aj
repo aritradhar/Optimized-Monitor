@@ -273,10 +273,14 @@ public aspect UnsafeIterMonitorAspect
 			System.out.println("------------------------------------------------------------------");	
 		}
 
+		@SuppressWarnings("rawtypes")
 		pointcut UnsafeIterator_create1(Collection c) : (call(Iterator Collection+.iterator()) && target(c)) && !within(UnsafeIteratorMonitor_1) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
-		@SuppressWarnings("unchecked")
 		after (Collection c) returning (Iterator i) : UnsafeIterator_create1(c) 
 		{
+			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			for(StackTraceElement st : stackTrace)
+			System.out.println(st);
+			
 			UnsafeIteratorMonitor_1 monitor_1=new UnsafeIteratorMonitor_1();
 			monitor_map.put(i, monitor_1);
 			Universe.put(i, c);		
