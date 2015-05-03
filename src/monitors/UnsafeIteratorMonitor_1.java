@@ -1,7 +1,3 @@
-package monitors;
-
-import java.util.Collection;
-import java.util.Iterator;
 
 //*************************************************************************************
 //*********************************************************************************** *
@@ -17,6 +13,11 @@ import java.util.Iterator;
 //version 1.0																		* *
 //*********************************************************************************** * 
 //*************************************************************************************
+
+package monitors;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 public class UnsafeIteratorMonitor_1 implements Cloneable 
 {
