@@ -34,6 +34,8 @@ public class  CircularArray<T>
 	
 	public void add(T element)
 	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
 		if(this.top == this.capacity)
 		{
 			top = 0;
@@ -43,6 +45,9 @@ public class  CircularArray<T>
 	
 	public void addAll(T[] elements)
 	{
+		if(elements == null)
+			throw new IllegalArgumentException("null argument passed");
+		
 		for(T element : elements)
 		{
 			this.add(element);
@@ -52,6 +57,9 @@ public class  CircularArray<T>
 	@SuppressWarnings("unchecked")
 	public void addAll(CircularArray<T> ca)
 	{
+		if(ca == null)
+			throw new IllegalArgumentException("null argument passed");
+		
 		for(Object element : ca.toArray())
 		{
 			this.add((T) element);
@@ -67,7 +75,7 @@ public class  CircularArray<T>
 	}
 	
 	/**
-	 * log n delete complexity
+	 * n delete complexity
 	 * @param pos
 	 * @return deleted element
 	 */
