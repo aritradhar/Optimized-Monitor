@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import callGraphTrace.CircularArray;
 import callGraphTrace.TraceData;
 
 
@@ -33,9 +34,14 @@ public aspect UnsafeIterMonitorAspect
 	//object isfetched, it will be assigned to this
 	UnsafeIteratorDfa monitor=null;
 
+	//keep a local pool of monitors in a circular array
+	
+	CircularArray<Object> localCircularArray = new CircularArray<>(100);
+	
 	//This HashMap will contain a mapping from a Iterator object to a
 	//monitor object.As we need to follow each iteratoe, I thought it
 	//would be better way to manage them
+	static Set<Object> monitorSet = new HashSet<>();
 	static HashMap<Object, UnsafeIteratorDfa> monitor_map= new HashMap<>();
 	static HashMap<Object, Object> Universe=new HashMap<>();
 
@@ -79,13 +85,15 @@ public aspect UnsafeIterMonitorAspect
 		System.out.println("                 All DFA                      ");
 		System.out.println("----------------------------------------------");
 		Iterator<Object> keys=monitor_map.keySet().iterator();
-		while(keys.hasNext())
-		{
-			Object curr_key=keys.next();
-			UnsafeIteratorDfa curr_monitor=monitor_map.get(curr_key);
-			System.out.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
-
-		}
+		
+//		while(keys.hasNext())
+//		{
+//			Object curr_key=keys.next();
+//			UnsafeIteratorDfa curr_monitor=monitor_map.get(curr_key);
+//			System.out.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
+//
+//		}
+		
 		System.out.println("------------------------------------------------------------------");	
 		System.out.println("Total dfa : "+monitor_map.keySet().size());
 		System.out.println("------------------------------------------------------------------");	
@@ -96,10 +104,12 @@ public aspect UnsafeIterMonitorAspect
 	@SuppressWarnings("rawtypes")
 	after (Collection c) returning (Iterator i) : UnsafeIterator_create1(c) 
 	{
-		if(TraceData.ca.toString().equals(trace))
+		//System.out.println(c);
+		if(TraceData.ca.toString().equals(trace) && monitorSet.contains(c))
 			return;
 		
-		System.out.println(TraceData.ca.toString());
+		monitorSet.add(c);
+		//System.out.println(TraceData.ca.toString());
 		
 		UnsafeIteratorDfa monitor_1=new UnsafeIteratorDfa();
 		monitor_map.put(i, monitor_1);

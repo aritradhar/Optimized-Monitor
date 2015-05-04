@@ -16,17 +16,20 @@
 
 package callGraphTrace;
 
+import java.util.Arrays;
+
 public class  CircularArray<T>
 {
 	public int capacity;
 	public int top;
-	private Object[] array;
+	private T[] array;
 	
+	@SuppressWarnings("unchecked")
 	public CircularArray(int capacity) 
 	{
 		this.capacity = capacity;
 		top = 0;
-		array = new Object[capacity];
+		array = (T[]) new Object[capacity];
 	}
 	
 	public void add(T element)
@@ -46,6 +49,15 @@ public class  CircularArray<T>
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void addAll(CircularArray<T> ca)
+	{
+		for(Object element : ca.toArray())
+		{
+			this.add((T) element);
+		}
+	}
+	
 	private void shiftOneLeft(int pos)
 	{
 		for(int i = pos; i < capacity - 1; i++)
@@ -59,7 +71,6 @@ public class  CircularArray<T>
 	 * @param pos
 	 * @return deleted element
 	 */
-	@SuppressWarnings("unchecked")
 	public T delete(int pos)
 	{
 		if(pos < 0 || pos > capacity)
@@ -89,8 +100,16 @@ public class  CircularArray<T>
 		return out;
 	}
 	
-	public Object[] toArray()
+	public T[] toArray()
 	{
 		return this.array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) 
+	{
+		CircularArray<T> ca = (CircularArray<T>) obj;
+		return Arrays.deepEquals(this.toArray(), ca.toArray());
 	}
 }

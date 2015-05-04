@@ -8,8 +8,10 @@ import callGraphTrace.TraceData;
 
 public class StatTest 
 {
-	public static void main(String[] args) 
+	public static void main(String[] args) throws InterruptedException 
 	{
+		//Thread.sleep(25000);
+		
 		TraceData.insert("void main(java.lang.String)");
 		foo();
 		bar();
@@ -39,7 +41,7 @@ public class StatTest
 				{
 					x += it.next();
 				}
-				c.add(x);
+				//c.add(x);
 			}
 			//System.out.println(c);
 			
