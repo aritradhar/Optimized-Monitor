@@ -31,12 +31,12 @@ public aspect UnsafeIterMonitorAspect
 	static String trace;
 	//this is thw monitor object reference. Whenever  suitable monitor
 	//object isfetched, it will be assigned to this
-	UnsafeIteratorMonitor_1 monitor=null;
+	UnsafeIteratorDfa monitor=null;
 
 	//This HashMap will contain a mapping from a Iterator object to a
 	//monitor object.As we need to follow each iteratoe, I thought it
 	//would be better way to manage them
-	static HashMap<Object, UnsafeIteratorMonitor_1> monitor_map= new HashMap<>();
+	static HashMap<Object, UnsafeIteratorDfa> monitor_map= new HashMap<>();
 	static HashMap<Object, Object> Universe=new HashMap<>();
 
 
@@ -67,7 +67,7 @@ public aspect UnsafeIterMonitorAspect
 	static HashMap<Object, Object> two_Map= new HashMap<Object, Object>();
 	static HashMap<Object, Object> three_Map= new HashMap<Object, Object>();
 
-	static List UnsafeIterator_List = makeList();
+	static List<Object> UnsafeIterator_List = makeList();
 
 	public static void final_printer()
 	{
@@ -82,7 +82,7 @@ public aspect UnsafeIterMonitorAspect
 		while(keys.hasNext())
 		{
 			Object curr_key=keys.next();
-			UnsafeIteratorMonitor_1 curr_monitor=monitor_map.get(curr_key);
+			UnsafeIteratorDfa curr_monitor=monitor_map.get(curr_key);
 			System.out.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
 
 		}
@@ -92,7 +92,8 @@ public aspect UnsafeIterMonitorAspect
 	}
 
 	@SuppressWarnings("rawtypes")
-	pointcut UnsafeIterator_create1(Collection c) : (call(Iterator Collection+.iterator()) && target(c)) && !within(UnsafeIteratorMonitor_1) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	pointcut UnsafeIterator_create1(Collection c) : (call(Iterator Collection+.iterator()) && target(c)) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	@SuppressWarnings("rawtypes")
 	after (Collection c) returning (Iterator i) : UnsafeIterator_create1(c) 
 	{
 		if(TraceData.ca.toString().equals(trace))
@@ -100,7 +101,7 @@ public aspect UnsafeIterMonitorAspect
 		
 		System.out.println(TraceData.ca.toString());
 		
-		UnsafeIteratorMonitor_1 monitor_1=new UnsafeIteratorMonitor_1();
+		UnsafeIteratorDfa monitor_1=new UnsafeIteratorDfa();
 		monitor_map.put(i, monitor_1);
 		Universe.put(i, c);		
 
@@ -161,11 +162,12 @@ public aspect UnsafeIterMonitorAspect
 
 
 	@SuppressWarnings("rawtypes")
-	pointcut UnsafeIterator_updatesource1(Collection c) : ((call(* Collection+.remove*(..)) || call(* Collection+.add*(..)) || call(* Collection+.put*(..))) && target(c)) && !within(UnsafeIteratorMonitor_1) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	pointcut UnsafeIterator_updatesource1(Collection c) : ((call(* Collection+.remove*(..)) || call(* Collection+.add*(..)) || call(* Collection+.put*(..))) && target(c)) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	@SuppressWarnings("rawtypes")
 	before (Collection c) : UnsafeIterator_updatesource1(c) 
 	{
 		//set of all monitors where c is accessed
-		List<UnsafeIteratorMonitor_1> monitor_set=new ArrayList<>();
+		List<UnsafeIteratorDfa> monitor_set=new ArrayList<>();
 		Iterator<Object> it_km=monitor_map.keySet().iterator();
 
 		while(it_km.hasNext())
@@ -176,7 +178,7 @@ public aspect UnsafeIterMonitorAspect
 		}
 
 
-		Iterator<UnsafeIteratorMonitor_1> it_m_ex=monitor_set.iterator();
+		Iterator<UnsafeIteratorDfa> it_m_ex=monitor_set.iterator();
 
 		while(it_m_ex.hasNext())
 		{
@@ -297,8 +299,7 @@ public aspect UnsafeIterMonitorAspect
 
 				//delete c-i from old state map
 
-				Iterator<Object> it_key1=key_ret.iterator();
-
+				//Iterator<Object> it_key1=key_ret.iterator();
 
 				while(it_key.hasNext())
 				{
@@ -348,7 +349,7 @@ public aspect UnsafeIterMonitorAspect
 	}
 
 	@SuppressWarnings("rawtypes")
-	pointcut UnsafeIterator_next1(Iterator i) : (call(* Iterator.next()) && target(i)) && !within(UnsafeIteratorMonitor_1) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	pointcut UnsafeIterator_next1(Iterator i) : (call(* Iterator.next()) && target(i)) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
 	@SuppressWarnings("rawtypes")
 	before (Iterator i) : UnsafeIterator_next1(i) 
 	{
@@ -371,7 +372,7 @@ public aspect UnsafeIterMonitorAspect
 			monitor.next(i);
 			///////////////////
 
-			ArrayList<Object> key_list=new ArrayList<Object>();
+			//ArrayList<Object> key_list=new ArrayList<Object>();
 			Object c=null;
 
 			if(current_state==0)
@@ -430,7 +431,7 @@ public aspect UnsafeIterMonitorAspect
 		}
 	}
 
-	pointcut UnsafeIterator_exit1() : (call(* System.exit(..))) && !within(UnsafeIteratorMonitor_1) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	pointcut UnsafeIterator_exit1() : (call(* System.exit(..))) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
 	before () : UnsafeIterator_exit1() 
 	{
 		System.out.println("Inside exit. Final event secquence : "+counter+" transitions : "+transition);	
@@ -444,7 +445,7 @@ public aspect UnsafeIterMonitorAspect
 		while(keys.hasNext())
 		{
 			Object curr_key=keys.next();
-			UnsafeIteratorMonitor_1 curr_monitor=monitor_map.get(curr_key);
+			UnsafeIteratorDfa curr_monitor=monitor_map.get(curr_key);
 			System.out.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
 
 		}
