@@ -29,21 +29,21 @@ import callGraphTrace.TraceData;
 
 public aspect UnsafeIterMonitorAspect 
 {
-	static String trace;
+	static volatile String trace;
 	//this is thw monitor object reference. Whenever  suitable monitor
 	//object isfetched, it will be assigned to this
 	UnsafeIteratorDfa monitor=null;
 
 	//keep a local pool of monitors in a circular array
 	
-	CircularArray<Object> localCircularArray = new CircularArray<>(100);
+	static volatile CircularArray<Object> localCircularArray = new CircularArray<>(100);
 	
 	//This HashMap will contain a mapping from a Iterator object to a
 	//monitor object.As we need to follow each iteratoe, I thought it
 	//would be better way to manage them
-	static Set<Object> monitorSet = new HashSet<>();
-	static HashMap<Object, UnsafeIteratorDfa> monitor_map= new HashMap<>();
-	static HashMap<Object, Object> Universe=new HashMap<>();
+	static volatile Set<Object> monitorSet = new HashSet<>();
+	static volatile HashMap<Object, UnsafeIteratorDfa> monitor_map= new HashMap<>();
+	static volatile HashMap<Object, Object> Universe=new HashMap<>();
 
 
 	static long counter=0;
