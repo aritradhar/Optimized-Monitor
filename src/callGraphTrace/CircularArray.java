@@ -31,7 +31,7 @@ public class  CircularArray<T>
 		top = 0;
 		array = (T[]) new Object[capacity];
 	}
-	
+
 	public void add(T element)
 	{
 		if(element == null)
@@ -64,6 +64,25 @@ public class  CircularArray<T>
 		{
 			this.add((T) element);
 		}
+	}
+	
+	public void sort()
+	{
+		Arrays.sort(this.array);
+	}
+	
+	public boolean search(T element)
+	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		for(T object : array)
+		{
+			if(object.toString().equals(element.toString()))
+				return true;
+		}
+		
+		return false;
 	}
 	
 	private void shiftOneLeft(int pos)

@@ -64,6 +64,8 @@ public aspect HasNextMonitorAspect
 		monitor.hasnext(i);
 		i_m_map.put(i, monitor);
 		trace = TraceData.ca.toString();
+		
+		globalList.add(monitor);
 	}
 
 	pointcut HasNext_next1(Iterator i) : (call(* Iterator.next()) && target(i)) && !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
