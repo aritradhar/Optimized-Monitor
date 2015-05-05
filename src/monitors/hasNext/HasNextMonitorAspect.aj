@@ -51,7 +51,8 @@ public aspect HasNextMonitorAspect
 	static Map indexing_lock = new HashMap();
 
 
-	pointcut HasNext_hasnext1(Iterator i) : (call(* Iterator.hasNext()) && target(i)) && !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
+	pointcut HasNext_hasnext1(Iterator i) : (call(* Iterator.hasNext()) && target(i)) 
+	&& !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
 	after (Iterator i) : HasNext_hasnext1(i) 
 	{
 		if(trace !=null)
@@ -60,15 +61,30 @@ public aspect HasNextMonitorAspect
 				return;
 		}
 		
-		HasNextMonitor monitor = new HasNextMonitor();
+		HasNextMonitor monitor = null;
+		
+		if(i_m_map.containsKey(i))
+			monitor = i_m_map.get(i);
+		
+		else
+			monitor = new HasNextMonitor();
+		
 		monitor.hasnext(i);
 		i_m_map.put(i, monitor);
 		trace = TraceData.ca.toString();
 		
-		globalList.add(monitor);
+		if(!globalList.search(monitor))
+			globalList.add(monitor);
+		
+		else
+		{
+			globalList.delete(monitor);
+			globalList.add(monitor);
+		}
 	}
 
-	pointcut HasNext_next1(Iterator i) : (call(* Iterator.next()) && target(i)) && !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
+	pointcut HasNext_next1(Iterator i) : (call(* Iterator.next()) && target(i)) 
+	&& !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
 	before (Iterator i) : HasNext_next1(i) 
 	{
 		

@@ -110,6 +110,44 @@ public class  CircularArray<T>
 		
 	}
 	
+	public T delete(T element)
+	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		int i = 0;
+		for(T object : this.array)
+		{
+			if(object == element)
+			{
+				this.delete(i);
+				return element;
+			}
+			i++;
+		}
+		
+		return null;
+	}
+	
+	public T getElement(T element)
+	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		int i = 0;
+		for(T object : this.array)
+		{
+			if(object == element)
+			{
+				return element;
+			}
+			i++;
+		}
+		
+		return null;
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
