@@ -69,17 +69,28 @@ public aspect HasNextMonitorAspect
 		else
 			monitor = new HasNextMonitor();
 		
-		monitor.hasnext(i);
-		i_m_map.put(i, monitor);
-		trace = TraceData.ca.toString();
+		synchronized (monitor) 
+		{
+			monitor.hasnext(i);
+			i_m_map.put(i, monitor);
+			trace = TraceData.ca.toString();
+		}
 		
 		if(!globalList.search(monitor))
-			globalList.add(monitor);
+		{
+			synchronized (monitor) 
+			{
+				globalList.add(monitor);
+			}
+		}
 		
 		else
 		{
-			globalList.delete(monitor);
-			globalList.add(monitor);
+			synchronized (monitor) 
+			{
+				globalList.delete(monitor);
+				globalList.add(monitor);
+			}
 		}
 	}
 
@@ -87,7 +98,27 @@ public aspect HasNextMonitorAspect
 	&& !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
 	before (Iterator i) : HasNext_next1(i) 
 	{
+		if(!i_m_map.containsKey(i))
+		{
+			System.err.print("Improper usage");
+			return;
+		}
 		
+		HasNextMonitor monitor = i_m_map.get(i);		
+
+		monitor.next(i);		
+
+		
+		if(monitor.MOP_fail)
+		{
+			System.err.print("Improper usage");
+		}
+		
+		synchronized (monitor) 
+		{
+			globalList.delete(monitor);
+			globalList.add(monitor);
+		}
 	}
 
 }

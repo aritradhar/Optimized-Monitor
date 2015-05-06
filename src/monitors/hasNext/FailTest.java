@@ -6,7 +6,8 @@ import java.util.Iterator;
 
 import callGraphTrace.TraceData;
 
-public class FailTest {
+public class FailTest 
+{
 
 	public static void main(String[] args) 
 	{
@@ -19,6 +20,7 @@ public class FailTest {
 		
 		Collection<Collection<Integer>> set_container = new HashSet<Collection<Integer>>();
 		Collection<Iterator<Integer>> iter_container = new HashSet<Iterator<Integer>>();
+		
 		for(int i = 0; i<10; i++)
 		{
 			Collection<Integer> c = new HashSet<Integer>();
@@ -36,6 +38,7 @@ public class FailTest {
 				while(it.hasNext())
 				{
 					x += it.next();
+					it.next();
 					c.add(x);
 				}
 			}

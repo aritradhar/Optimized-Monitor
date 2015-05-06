@@ -76,7 +76,10 @@ public class  CircularArray<T>
 		if(element == null)
 			throw new IllegalArgumentException("null argument passed");
 		
-		for(T object : array)
+		if(top == 0)
+			return false;
+		
+		for(T object : this.array)
 		{
 			if(object.toString().equals(element.toString()))
 				return true;
