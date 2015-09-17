@@ -48,8 +48,9 @@ public class Instrumentor extends BodyTransformer
 	/* (non-Javadoc)
 	 * @see soot.BodyTransformer#internalTransform(soot.Body, java.lang.String, java.util.Map)
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
-	protected void internalTransform(Body body, String phaseName, Map<String, String> options) 
+	protected void internalTransform(Body body, String phaseName, Map options) 
 	{
 		String methodName = body.getMethod().getSignature();
 		System.out.println("Method name : " + body.getMethod());

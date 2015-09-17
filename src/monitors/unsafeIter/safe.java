@@ -1,4 +1,4 @@
-package monitors;
+package monitors.unsafeIter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +13,7 @@ public class safe
 		c1.add("b");
 		c1.add("c");
 		c1.add("x");
-		Iterator it1=c1.iterator();
+		Iterator<String> it1=c1.iterator();
 		it1.next();
 		it1.next();
 		//c1.add("y");
@@ -24,8 +24,8 @@ public class safe
 		
 		
 		c.add("a");
-		Iterator it=c.iterator();
-		Iterator it_c=c.iterator();
+		Iterator<String> it=c.iterator();
+		//Iterator<String> it_c=c.iterator();
 		//while(it.hasNext())
 		it.next();
 		c.add("d");

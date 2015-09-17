@@ -16,21 +16,26 @@
 
 package callGraphTrace;
 
+import java.util.Arrays;
+
 public class  CircularArray<T>
 {
 	public int capacity;
 	public int top;
-	private Object[] array;
+	private T[] array;
 	
+	@SuppressWarnings("unchecked")
 	public CircularArray(int capacity) 
 	{
 		this.capacity = capacity;
 		top = 0;
-		array = new Object[capacity];
+		array = (T[]) new Object[capacity];
 	}
-	
+
 	public void add(T element)
 	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
 		if(this.top == this.capacity)
 		{
 			top = 0;
@@ -40,10 +45,47 @@ public class  CircularArray<T>
 	
 	public void addAll(T[] elements)
 	{
+		if(elements == null)
+			throw new IllegalArgumentException("null argument passed");
+		
 		for(T element : elements)
 		{
 			this.add(element);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void addAll(CircularArray<T> ca)
+	{
+		if(ca == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		for(Object element : ca.toArray())
+		{
+			this.add((T) element);
+		}
+	}
+	
+	public void sort()
+	{
+		Arrays.sort(this.array);
+	}
+	
+	public boolean search(T element)
+	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		if(top == 0)
+			return false;
+		
+		for(T object : this.array)
+		{
+			if(object.toString().equals(element.toString()))
+				return true;
+		}
+		
+		return false;
 	}
 	
 	private void shiftOneLeft(int pos)
@@ -55,11 +97,10 @@ public class  CircularArray<T>
 	}
 	
 	/**
-	 * log n delete complexity
+	 * n delete complexity
 	 * @param pos
 	 * @return deleted element
 	 */
-	@SuppressWarnings("unchecked")
 	public T delete(int pos)
 	{
 		if(pos < 0 || pos > capacity)
@@ -71,6 +112,44 @@ public class  CircularArray<T>
 		return element;
 		
 	}
+	
+	public T delete(T element)
+	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		int i = 0;
+		for(T object : this.array)
+		{
+			if(object == element)
+			{
+				this.delete(i);
+				return element;
+			}
+			i++;
+		}
+		
+		return null;
+	}
+	
+	public T getElement(T element)
+	{
+		if(element == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		int i = 0;
+		for(T object : this.array)
+		{
+			if(object == element)
+			{
+				return element;
+			}
+			i++;
+		}
+		
+		return null;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -89,8 +168,16 @@ public class  CircularArray<T>
 		return out;
 	}
 	
-	public Object[] toArray()
+	public T[] toArray()
 	{
 		return this.array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) 
+	{
+		CircularArray<T> ca = (CircularArray<T>) obj;
+		return Arrays.deepEquals(this.toArray(), ca.toArray());
 	}
 }

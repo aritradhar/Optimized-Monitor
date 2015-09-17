@@ -14,17 +14,17 @@
 //*********************************************************************************** * 
 //*************************************************************************************
 
-package monitors;
+package monitors.unsafeIter;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-public class UnsafeIteratorMonitor_1 implements Cloneable 
+public class UnsafeIteratorDfa implements Cloneable 
 {
 	public Object clone() 
 	{
 		try {
-			UnsafeIteratorMonitor_1 ret = (UnsafeIteratorMonitor_1) super.clone();
+			UnsafeIteratorDfa ret = (UnsafeIteratorDfa) super.clone();
 			return ret;
 		}
 		catch (CloneNotSupportedException e) {
@@ -40,7 +40,7 @@ public class UnsafeIteratorMonitor_1 implements Cloneable
 
 	boolean MOP_match = false;
 
-	public UnsafeIteratorMonitor_1 () {
+	public UnsafeIteratorDfa () {
 		state = 0;
 		event = -1;
 		//start will denote if this particular DFA is stared
