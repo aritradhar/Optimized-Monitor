@@ -10,9 +10,9 @@ public class FileTest {
 		
 		File file = new File("a.txt");
 		FileWriter fw = new FileWriter(file);
-		
 		fw.write("abc");
-		
 		fw.close();
+		
+		System.nanoTime();
 	}
 }
