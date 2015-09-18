@@ -31,17 +31,7 @@ public aspect HasNextMonitorAspect
 	
 	static volatile String trace = null;
 	
-	Map makeMap(Object key)
-	{
-		if (key instanceof String) 
-		{
-			return new HashMap();
-		} 
-		else 
-		{
-			return new ReferenceIdentityMap(AbstractReferenceMap.WEAK, AbstractReferenceMap.HARD, true);
-		}
-	}
+	
 	static List makeList()
 	{
 		return new ArrayList();
