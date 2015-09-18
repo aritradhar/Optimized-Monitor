@@ -1,4 +1,3 @@
-
 //*************************************************************************************
 //*********************************************************************************** *
 //author Aritra Dhar 																* *
@@ -13,29 +12,16 @@
 //*********************************************************************************** *
 //*************************************************************************************
 
+
 package monitors.fileWrite;
 
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.FileWriter;
 
-import monitors.hasNext.HasNextMonitor;
-
-import org.apache.commons.collections.map.*;
-
-import callGraphTrace.CircularArray;
-
-import java.lang.ref.WeakReference;
-
-class SafeFileWriterMonitor_optimized implements Cloneable {
-	
-	static volatile CircularArray<SafeFileWriterMonitor> globalList = new CircularArray<>(50);
-	static volatile Map<Iterator<?>, SafeFileWriterMonitor> i_m_map = new ConcurrentHashMap<>();
-	static volatile String trace = null;
+public class SafeFileWriterMonitor implements Cloneable {
 	
 	public Object clone() {
 		try {
-			SafeFileWriterMonitor_optimized ret = (SafeFileWriterMonitor_optimized) super.clone();
+			SafeFileWriterMonitor ret = (SafeFileWriterMonitor) super.clone();
 			return ret;
 		}
 		catch (CloneNotSupportedException e) {
@@ -50,7 +36,7 @@ class SafeFileWriterMonitor_optimized implements Cloneable {
 	boolean MOP_fail = false;
 	boolean MOP_match = false;
 
-	public SafeFileWriterMonitor_optimized () {
+	public SafeFileWriterMonitor () {
 		state = 0;
 		event = -1;
 
@@ -164,33 +150,4 @@ class SafeFileWriterMonitor_optimized implements Cloneable {
 		MOP_fail = false;
 		MOP_match = false;
 	}
-}
-
-public aspect SafeFileWriterMonitor {
-
-
-	pointcut SafeFileWriter_open1() : (call(FileWriter.new(..))) && !within(SafeFileWriterMonitor_optimized) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
-	after () returning (FileWriter f) : SafeFileWriter_open1() 
-	{
-		
-	}
-
-	pointcut SafeFileWriter_write1(FileWriter f) : (call(* write(..)) && target(f)) && !within(SafeFileWriterMonitor_optimized) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
-	before (FileWriter f) : SafeFileWriter_write1(f) 
-	{
-		
-	}
-
-	pointcut SafeFileWriter_close1(FileWriter f) : (call(* close(..)) && target(f)) && !within(SafeFileWriterMonitor_optimized) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
-	after (FileWriter f) : SafeFileWriter_close1(f) 
-	{
-		
-	}
-	
-	pointcut SafeFileWriterMonitor_optimized_exit() : (call(* System.nanoTime(..))) && !within(SafeFileWriterMonitor_optimized) && !within(SafeFileWriterMonitor_optimized) && !adviceexecution();
-	before () : SafeFileWriterMonitor_optimized_exit() 
-	{
-		System.out.println("Exit");
-	}
-
 }
