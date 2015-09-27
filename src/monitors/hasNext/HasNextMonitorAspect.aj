@@ -90,7 +90,7 @@ public aspect HasNextMonitorAspect
 	{
 		if(!i_m_map.containsKey(i))
 		{
-			System.err.print("Improper usage");
+			//System.err.print("Improper usage");
 			return;
 		}
 		
@@ -101,7 +101,7 @@ public aspect HasNextMonitorAspect
 		
 		if(monitor.MOP_fail)
 		{
-			System.err.print("Improper usage");
+			//System.err.print("Improper usage");
 		}
 		
 		synchronized (monitor) 

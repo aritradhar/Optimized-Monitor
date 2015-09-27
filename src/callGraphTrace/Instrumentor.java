@@ -54,8 +54,10 @@ public class Instrumentor extends BodyTransformer
 	{
 		String methodName = body.getMethod().getSignature();
 		System.out.println("Method name : " + body.getMethod());
-		//if(body.getMethod().getName().startsWith("<"))
-			//return;
+		
+		//exclude constructors
+		if(body.getMethod().getName().startsWith("<"))
+			return;
 
 		//System.out.println(body);
 		PatchingChain<Unit> pc =  body.getUnits();
@@ -67,9 +69,9 @@ public class Instrumentor extends BodyTransformer
 		while(it.hasNext())
 		{
 			Stmt stmt = (Stmt) it.next();
-			if(stmt instanceof IdentityStmt)
+			if(!(stmt instanceof IdentityStmt))
 			{
-				pc.insertAfter(st, stmt);
+				pc.insertBefore(st, stmt);
 				break;
 			}
 		}
