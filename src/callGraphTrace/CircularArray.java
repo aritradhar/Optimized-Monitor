@@ -34,6 +34,9 @@ public class  CircularArray<T>
 
 	public void add(T element)
 	{
+		if(this.search(element))
+			return;
+		
 		if(element == null)
 			throw new IllegalArgumentException("null argument passed");
 		if(this.top == this.capacity)

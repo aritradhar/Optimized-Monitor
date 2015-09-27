@@ -47,6 +47,7 @@ public class BatchDriverClass
 		for(String s : files)
 		{
 			String[] ar = {s};
+			System.err.println("Instrumenting : " + s);
 			Options.v().set_soot_classpath("C:\\Users\\Aritra\\workspace\\CGTrace\\bin");				
 			Options.v().set_prepend_classpath(true);
 			Options.v().setPhaseOption("jb", "use-original-names:true");
@@ -55,6 +56,7 @@ public class BatchDriverClass
 
 			soot.Main.main(ar);
 			G.reset();
+			System.out.println("-------------------------------------------------------------");
 		}
 	}
 
