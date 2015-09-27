@@ -12,7 +12,7 @@ public class FileTest {
 		FileWriter fw = new FileWriter(file);
 		fw.write("abc");
 		fw.close();
-		
-		System.nanoTime();
+		fw.write("a");
+		System.exit(1);
 	}
 }

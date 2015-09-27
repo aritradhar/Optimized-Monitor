@@ -55,9 +55,10 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 			System.out.println("Monitor created");
 		}
 		
-		if(monitor.MOP_fail)
+		if(monitor.MOP_fail())
 		{
-			System.err.println("Monitor is at error state");
+			System.out.println("Monitor is at error state");
+			printStat();
 		}
 		
 		synchronized (monitor) 
@@ -88,20 +89,31 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 	pointcut SafeFileWriter_write1(FileWriter f) : (call(* write(..)) && target(f)) && !within(SafeFileWriterMonitor) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
 	before (FileWriter f) : SafeFileWriter_write1(f) 
 	{
+		
+		System.out.println("write event");
 		if(!f_m_map.containsKey(f))
 		{
-			System.err.print("Improper usage");
+			System.out.print("Improper usage");
+			printStat();
 			return;
 		}
 		
 		SafeFileWriterMonitor monitor = f_m_map.get(f);		
 
-		monitor.write(f);	
-
-		
-		if(monitor.MOP_fail)
+		//if the monitor is already at error state
+		if(monitor.MOP_fail())
 		{
-			System.err.print("Improper usage");
+			System.err.print("Monitor is in error state");
+			printStat();
+		}
+		monitor.write(f);	
+		
+		//monitor at the error state after write
+
+		if(monitor.MOP_fail())
+		{
+			System.out.print("Monitor is in error state");
+			printStat();
 		}
 		
 		synchronized (monitor) 
@@ -114,19 +126,28 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 	pointcut SafeFileWriter_close1(FileWriter f) : (call(* close(..)) && target(f)) && !within(SafeFileWriterMonitor) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
 	after (FileWriter f) : SafeFileWriter_close1(f) 
 	{
+		if(!f_m_map.containsKey(f))
+		{
+			System.out.print("Improper usage");
+			printStat();
+			return;
+		}
 		
+		SafeFileWriterMonitor monitor = f_m_map.get(f);		
+
+		monitor.close(f);
 	}
 	
-	pointcut SafeFileWriterMonitor_optimized_exit() : (call(* System.nanoTime(..))) && !within(SafeFileWriterMonitor) && !within(SafeFileWriterMonitor) && !adviceexecution();
+	pointcut SafeFileWriterMonitor_optimized_exit() : (call(* System.exit(..))) && !within(SafeFileWriterMonitor) && !within(SafeFileWriterMonitor) && !adviceexecution();
 	before () : SafeFileWriterMonitor_optimized_exit() 
 	{
-		printStat();
-		System.out.println("Exit");
+		printStat();	
 	}
 	
 	public static void printStat()
 	{
-		
+		System.out.println("\nExit");
+		System.out.println("Total monitors : " + f_m_map.size());
 	}
 
 }
