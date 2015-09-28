@@ -84,6 +84,8 @@ public class  CircularArray<T>
 		
 		for(T object : this.array)
 		{
+			if(object == null)
+				continue;
 			if(object.toString().equals(element.toString()))
 				return true;
 		}

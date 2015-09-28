@@ -23,18 +23,22 @@ public class TraceData
 	public static HashMap<String, Integer> methodIdMap = new HashMap<>();
 	public static int[] methodArray = new int[MONITOR_LIMIT];
 	public static CircularArray<Integer> ca = new CircularArray<>(3);
+	public static boolean message_flag = false;
 	
 	public static void insert(String methodName)
 	{
+		if(!message_flag)
+			System.err.println("Instrumentation initialized");
+		
 		int id = methodIdMap.containsKey(methodName) ? methodIdMap.get(methodName) : methodIdMap.size() + 1;
 		
-		System.out.println(methodName + " : " + id);
+		//System.out.println(methodName + " : " + id);
 		
 		if(!methodIdMap.containsKey(methodName))
 			methodIdMap.put(methodName, id);
 		
 		ca.add(id);
 		
-		System.out.println(ca);
+		//System.out.println(ca);
 	}
 }
