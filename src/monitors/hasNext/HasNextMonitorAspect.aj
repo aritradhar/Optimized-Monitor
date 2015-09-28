@@ -18,8 +18,6 @@ package monitors.hasNext;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.collections.map.*;
-
 import callGraphTrace.CircularArray;
 import callGraphTrace.TraceData;
 
@@ -31,6 +29,7 @@ public aspect HasNextMonitorAspect
 	
 	static volatile String trace = null;
 	
+	static volatile int creation_counter = 0, next_counter = 0;
 	
 	static List makeList()
 	{
@@ -45,6 +44,8 @@ public aspect HasNextMonitorAspect
 	&& !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
 	after (Iterator i) : HasNext_hasnext1(i) 
 	{
+		creation_counter++;
+		
 		if(trace !=null)
 		{
 			if(trace.equals(TraceData.ca.toString()))
@@ -88,6 +89,8 @@ public aspect HasNextMonitorAspect
 	&& !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
 	before (Iterator i) : HasNext_next1(i) 
 	{
+		next_counter++;
+		
 		if(!i_m_map.containsKey(i))
 		{
 			//System.err.print("Improper usage");
@@ -110,6 +113,20 @@ public aspect HasNextMonitorAspect
 			globalList.add(monitor);
 		}
 	}
+	
+	pointcut UnsafeIterator_exit1() : (call(* System.exit(..))) && !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
+	before () : UnsafeIterator_exit1() 
+	{
+
+		System.out.println("Creation event : " + creation_counter);
+		System.out.println("Next event : " + next_counter);
+		System.out.println("------------------------------------------------------------------");	
+		System.out.println("Total dfa : "+i_m_map.size());
+		System.out.println("------------------------------------------------------------------");
+		
+		//System.out.println("Universal map : " + globalList.size());
+	}
+
 
 }
 

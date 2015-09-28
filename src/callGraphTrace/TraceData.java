@@ -35,7 +35,8 @@ public class TraceData
 		
 		int id = methodIdMap.containsKey(methodName) ? methodIdMap.get(methodName) : methodIdMap.size() + 1;
 		
-		//System.out.println(methodName + " : " + id);
+		if(methodName.contains("next") || methodName.contains("Iterator"))
+		System.out.println(methodName + " : " + id);
 		
 		if(!methodIdMap.containsKey(methodName))
 			methodIdMap.put(methodName, id);

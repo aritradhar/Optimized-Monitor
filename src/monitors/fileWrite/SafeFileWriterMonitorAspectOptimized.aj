@@ -19,7 +19,6 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import monitors.hasNext.HasNextMonitor;
 import callGraphTrace.CircularArray;
 import callGraphTrace.TraceData;
 
@@ -31,13 +30,15 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 	//contains a mapping between FileWriter object and SafeFileWriterMonitor object
 	static volatile Map<FileWriter, SafeFileWriterMonitor> f_m_map = new ConcurrentHashMap<>();
 	static volatile String trace = null;
+	static volatile int creation_counter = 0, write_counter = 0;
 	
 
 	pointcut SafeFileWriter_open1() : (call(FileWriter.new(..))) && !within(SafeFileWriterMonitor) 
 	&& !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
 	after () returning (FileWriter f) : SafeFileWriter_open1() 
 	{
-		
+	
+		creation_counter++;
 		if(trace !=null)
 		{
 			if(trace.equals(TraceData.ca.toString()))
@@ -89,7 +90,7 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 	pointcut SafeFileWriter_write1(FileWriter f) : (call(* write(..)) && target(f)) && !within(SafeFileWriterMonitor) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
 	before (FileWriter f) : SafeFileWriter_write1(f) 
 	{
-		
+		write_counter++;
 		System.out.println("write event");
 		if(!f_m_map.containsKey(f))
 		{
@@ -148,6 +149,19 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 	{
 		System.out.println("\nExit");
 		System.out.println("Total monitors : " + f_m_map.size());
+	}
+	
+	pointcut UnsafeIterator_exit1() : (call(* System.exit(..))) && !within(SafeFileWriterMonitor) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
+	before () : UnsafeIterator_exit1() 
+	{
+
+		System.out.println("Creation event : " + creation_counter);
+		System.out.println("Write event : " + write_counter);
+		System.out.println("------------------------------------------------------------------");	
+		System.out.println("Total dfa : "+ f_m_map.size());
+		System.out.println("------------------------------------------------------------------");
+		
+		//System.out.println("Universal map : " + globalList.size());
 	}
 
 }

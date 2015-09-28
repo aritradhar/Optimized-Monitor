@@ -291,7 +291,7 @@ public aspect UnsafeIterMonitorAspect
 	@SuppressWarnings("rawtypes")
 	after (Collection c) returning (Iterator i) : UnsafeIterator_create1(c) 
 	{
-		System.out.println("Iterator created");
+		//System.out.println("Iterator created");
 		if(TraceData.ca.toString().equals(trace) && monitorSet.contains(c))
 			return;
 		
@@ -628,7 +628,7 @@ public aspect UnsafeIterMonitorAspect
 		}
 	}
 
-	pointcut UnsafeIterator_exit1() : (call(* main(..))) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	pointcut UnsafeIterator_exit1() : (call(* System.exit(..))) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
 	before () : UnsafeIterator_exit1() 
 	{
 		System.out.println("Inside exit. Final event secquence : "+counter+" transitions : "+transition);	
@@ -639,6 +639,7 @@ public aspect UnsafeIterMonitorAspect
 		System.out.println("                 All DFA                      ");
 		System.out.println("----------------------------------------------");
 		Iterator<Object> keys=monitor_map.keySet().iterator();
+		/*
 		while(keys.hasNext())
 		{
 			Object curr_key=keys.next();
@@ -646,6 +647,7 @@ public aspect UnsafeIterMonitorAspect
 			System.out.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
 
 		}
+		*/
 		System.out.println("------------------------------------------------------------------");	
 		System.out.println("Total dfa : "+monitor_map.size());
 		System.out.println("------------------------------------------------------------------");	
