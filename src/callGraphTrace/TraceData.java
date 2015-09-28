@@ -27,8 +27,11 @@ public class TraceData
 	
 	public static void insert(String methodName)
 	{
-		if(!message_flag)
-			System.err.println("Instrumentation initialized");
+//		if(!message_flag)
+//		{
+//			System.err.println("Instrumentation initialized");
+//			message_flag = false;
+//		}
 		
 		int id = methodIdMap.containsKey(methodName) ? methodIdMap.get(methodName) : methodIdMap.size() + 1;
 		
