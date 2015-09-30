@@ -15,8 +15,8 @@
 
 package monitors.fileWrite;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileWriter;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import callGraphTrace.CircularArray;
@@ -26,7 +26,8 @@ import callGraphTrace.TraceData;
 
 public aspect SafeFileWriterMonitorAspectOptimized {
 
-	static volatile CircularArray<SafeFileWriterMonitor> globalList = new CircularArray<>(50);
+	static volatile CircularArray<Object> globalList = new CircularArray<>(50);
+	
 	//contains a mapping between FileWriter object and SafeFileWriterMonitor object
 	static volatile Map<FileWriter, SafeFileWriterMonitor> f_m_map = new ConcurrentHashMap<>();
 	static volatile String trace = null;
@@ -39,11 +40,9 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 	{
 	
 		creation_counter++;
-		if(trace !=null)
-		{
-			if(trace.equals(TraceData.ca.toString()))
-			{}	
-		}
+		
+		if(trace != null && TraceData.ca.toString().equals(trace))
+			return;
 		
 		SafeFileWriterMonitor monitor = null;
 		
@@ -85,6 +84,8 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 				globalList.add(monitor);
 			}
 		}
+		
+		trace = TraceData.ca.toString();
 	}
 
 	pointcut SafeFileWriter_write1(FileWriter f) : (call(* write(..)) && target(f)) && !within(SafeFileWriterMonitor) && !within(SafeFileWriterMonitorAspectOptimized) && !adviceexecution();
@@ -104,7 +105,7 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 		//if the monitor is already at error state
 		if(monitor.MOP_fail())
 		{
-			System.err.print("Monitor is in error state");
+			System.out.print("Monitor is in error state");
 			printStat();
 		}
 		monitor.write(f);	
@@ -113,7 +114,7 @@ public aspect SafeFileWriterMonitorAspectOptimized {
 
 		if(monitor.MOP_fail())
 		{
-			System.out.print("Monitor is in error state");
+			System.out.print("Monitor is in error state11");
 			printStat();
 		}
 		

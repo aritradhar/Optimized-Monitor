@@ -5,7 +5,7 @@ import java.util.List;
 
 import soot.*;
 import soot.options.Options;
-public class BatchDriverClass 
+public class BatchDriverClass_bloat 
 {
 	public static List<String> files = new ArrayList<>();
 
