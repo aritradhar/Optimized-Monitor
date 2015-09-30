@@ -24,11 +24,15 @@ public class BatchDriverClass_pmd
 			else {
 				String fName = f.getAbsoluteFile().toString().substring(44);
 				if(fName.contains(".class"))
-				{
+				{	
 					fName = fName.replace(".class", "");
 					fName = fName.replaceAll("\\\\", ".");
-					System.out.println(fName);
-					files.add(fName);
+					
+					//if(!fName.contains("pmd.ant"))
+					{
+						System.out.println(fName);
+						files.add(fName);
+					}
 				}
 
 			}
@@ -42,13 +46,15 @@ public class BatchDriverClass_pmd
 			System.err.println("Usage: java MainDriver[options] classname");
 			System.exit(0);
 		}*/
-		walk("bin\\EDU");
+		walk("bin\\net");
 
 		for(String s : files)
 		{
 			String[] ar = {s};
 			System.err.println("Instrumenting : " + s);
-			Options.v().set_soot_classpath("C:\\Users\\Aritra\\workspace\\CGTrace\\bin");				
+			Options.v().set_soot_classpath("C:\\Users\\Aritra\\workspace\\CGTrace\\bin;"
+					+ "C:\\lib\\apache-ant-1.8.2.jar;"
+					+ "C:\\lib\\pmd_dep.jar");				
 			Options.v().set_prepend_classpath(true);
 			Options.v().setPhaseOption("jb", "use-original-names:true");
 			Pack jtp = PackManager.v().getPack("jtp");
