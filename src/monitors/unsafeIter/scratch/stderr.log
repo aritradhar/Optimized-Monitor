@@ -1,0 +1,30 @@
+** Exception while optimizing transform(LEDU/purdue/cs/bloat/editor/MethodEditor;)Z of class EDU/purdue/cs/bloat/trans/CompactArrayInitializer
+null
+java.lang.NullPointerException
+	at monitors.unsafeIter.UnsafeIterMonitorAspect.ajc$before$monitors_unsafeIter_UnsafeIterMonitorAspect$2$4bc652c(UnsafeIterMonitorAspect.aj:459)
+	at EDU.purdue.cs.bloat.tree.Tree.appendStmt(Tree.java:627)
+	at EDU.purdue.cs.bloat.tree.Tree.addStmt(Tree.java:639)
+	at EDU.purdue.cs.bloat.cfg.FlowGraph.removeBlock(FlowGraph.java:3318)
+	at EDU.purdue.cs.bloat.cfg.FlowGraph.removeNode(FlowGraph.java:3243)
+	at EDU.purdue.cs.bloat.util.Graph$2.remove(Graph.java:627)
+	at EDU.purdue.cs.bloat.util.Graph.removeUnreachable(Graph.java:292)
+	at EDU.purdue.cs.bloat.trans.ValueFolding.transform(ValueFolding.java:139)
+	at EDU.purdue.cs.bloat.optimize.Main.bloatMethod(Main.java:872)
+	at EDU.purdue.cs.bloat.optimize.Main.editClass(Main.java:688)
+	at EDU.purdue.cs.bloat.optimize.Main.main(Main.java:446)
+	at dacapo.bloat.BloatHarness.iterate(BloatHarness.java:25)
+	at dacapo.Benchmark.run(Benchmark.java:121)
+	at dacapo.TestHarness.runBenchmark(TestHarness.java:300)
+	at dacapo.TestHarness.main(TestHarness.java:240)
+	at Harness.main(Harness.java:5)
+Inside exit. Final event secquence : 66610 transitions : 6363
+Creation counter : 6238
+Update counter : 937
+Next counter : 59435
+----------------------------------------------
+                 All DFA                      
+----------------------------------------------
+------------------------------------------------------------------
+Total dfa : 6238
+------------------------------------------------------------------
+Universal map : 6238

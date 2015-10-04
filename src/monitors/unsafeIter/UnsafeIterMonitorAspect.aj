@@ -264,26 +264,26 @@ public aspect UnsafeIterMonitorAspect
 
 	public static void final_printer()
 	{
-		System.out.println("Final event secquence : "+counter+" transitions : "+transition);	
-		System.out.println("Creation counter : "+creation_counter);
-		System.out.println("Update counter : "+update_counter);
-		System.out.println("Next counter : "+next_counter);
-		System.out.println("----------------------------------------------");
-		System.out.println("                 All DFA                      ");
-		System.out.println("----------------------------------------------");
+		System.err.println("Final event secquence : "+counter+" transitions : "+transition);	
+		System.err.println("Creation counter : "+creation_counter);
+		System.err.println("Update counter : "+update_counter);
+		System.err.println("Next counter : "+next_counter);
+		System.err.println("----------------------------------------------");
+		System.err.println("                 All DFA                      ");
+		System.err.println("----------------------------------------------");
 		Iterator<Object> keys=monitor_map.keySet().iterator();
 		
 //		while(keys.hasNext())
 //		{
 //			Object curr_key=keys.next();
 //			UnsafeIteratorDfa curr_monitor=monitor_map.get(curr_key);
-//			System.out.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
+//			System.err.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
 //
 //		}
 		
-		System.out.println("------------------------------------------------------------------");	
-		System.out.println("Total dfa : "+monitor_map.keySet().size());
-		System.out.println("------------------------------------------------------------------");	
+		System.err.println("------------------------------------------------------------------");	
+		System.err.println("Total dfa : "+monitor_map.keySet().size());
+		System.err.println("------------------------------------------------------------------");	
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -291,12 +291,12 @@ public aspect UnsafeIterMonitorAspect
 	@SuppressWarnings("rawtypes")
 	after (Collection c) returning (Iterator i) : UnsafeIterator_create1(c) 
 	{
-		//System.out.println("Iterator created");
+		//System.err.println("Iterator created");
 		if(TraceData.ca.toString().equals(trace) && monitorSet.contains(c))
 			return;
 		
 		monitorSet.add(c);
-		//System.out.println(TraceData.ca.toString());
+		//System.err.println(TraceData.ca.toString());
 		
 		UnsafeIteratorDfa monitor_1=new UnsafeIteratorDfa();
 		monitor_map.put(i, monitor_1);
@@ -321,7 +321,7 @@ public aspect UnsafeIterMonitorAspect
 		if(current_state!=called_state)
 			monitor.dfa_transition++;
 
-		//System.out.println("Creation transition from "+current_state+" to "+called_state+" Event sequence : "+counter+" Collection : "+c.toString()+" Iterator : "+i.toString()+" dfa event counter :"+monitor.dfa_event_counter+" of :"+monitor.dfa_name);
+		//System.err.println("Creation transition from "+current_state+" to "+called_state+" Event sequence : "+counter+" Collection : "+c.toString()+" Iterator : "+i.toString()+" dfa event counter :"+monitor.dfa_event_counter+" of :"+monitor.dfa_name);
 		//add c,i to new state_map
 		if(called_state==0)
 			zero_Map.put(i, c);
@@ -348,7 +348,7 @@ public aspect UnsafeIterMonitorAspect
 
 		if(called_state==3)
 		{
-			System.out.println("Unsafe Iterator usage for iterator "+i.toString());
+			System.err.println("Unsafe Iterator usage for iterator "+i.toString());
 			final_printer();
 		}
 
@@ -446,7 +446,7 @@ public aspect UnsafeIterMonitorAspect
 					while(it.hasNext())
 					{
 						Object key=it.next();
-						//System.out.println("####"+three_Map);
+						//System.err.println("####"+three_Map);
 						if(three_Map.get(key).equals(c))
 						{
 							key_ret.add(key);
@@ -467,7 +467,7 @@ public aspect UnsafeIterMonitorAspect
 				if(current_state!=called_state)
 					monitor.dfa_transition++;
 
-				//System.out.println("Update transition from "+current_state+" to "+called_state+" Event sequence : "+counter+ " over Collection"+c.toString()+" dfa event counter :"+monitor.dfa_event_counter+" of :"+monitor.dfa_name);
+				//System.err.println("Update transition from "+current_state+" to "+called_state+" Event sequence : "+counter+ " over Collection"+c.toString()+" dfa event counter :"+monitor.dfa_event_counter+" of :"+monitor.dfa_name);
 
 				//add c,i to new state_map
 
@@ -532,7 +532,7 @@ public aspect UnsafeIterMonitorAspect
 
 				if(called_state==3)
 				{
-					System.out.println("Unsafe Iterator usage. Final event secquence : "+counter);
+					System.err.println("Unsafe Iterator usage. Final event secquence : "+counter);
 					final_printer();
 				}
 				//end of monitor modification		
@@ -587,7 +587,7 @@ public aspect UnsafeIterMonitorAspect
 			if(current_state!=called_state)
 				monitor.dfa_transition++;
 
-			//System.out.println("Next transition from "+current_state+" to "+called_state+" Event sequence : "+counter+" over Iterator: "+i.toString()+" dfa event counter :"+monitor.dfa_event_counter+" of :"+monitor.dfa_name);
+			//System.err.println("Next transition from "+current_state+" to "+called_state+" Event sequence : "+counter+" over Iterator: "+i.toString()+" dfa event counter :"+monitor.dfa_event_counter+" of :"+monitor.dfa_name);
 
 
 			//add c,i to new state_map
@@ -622,7 +622,7 @@ public aspect UnsafeIterMonitorAspect
 
 			if(called_state==3)
 			{
-				System.out.println("Unsafe Iterator usage. Final event secquence : "+counter);
+				System.err.println("Unsafe Iterator usage. Final event secquence : "+counter);
 				final_printer();
 			}
 		}
@@ -631,27 +631,27 @@ public aspect UnsafeIterMonitorAspect
 	pointcut UnsafeIterator_exit1() : (call(* System.exit(..))) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
 	before () : UnsafeIterator_exit1() 
 	{
-		System.out.println("Inside exit. Final event secquence : "+counter+" transitions : "+transition);	
-		System.out.println("Creation counter : "+creation_counter);
-		System.out.println("Update counter : "+update_counter);
-		System.out.println("Next counter : "+next_counter);
-		System.out.println("----------------------------------------------");
-		System.out.println("                 All DFA                      ");
-		System.out.println("----------------------------------------------");
+		System.err.println("Inside exit. Final event secquence : "+counter+" transitions : "+transition);	
+		System.err.println("Creation counter : "+creation_counter);
+		System.err.println("Update counter : "+update_counter);
+		System.err.println("Next counter : "+next_counter);
+		System.err.println("----------------------------------------------");
+		System.err.println("                 All DFA                      ");
+		System.err.println("----------------------------------------------");
 		Iterator<Object> keys=monitor_map.keySet().iterator();
 		/*
 		while(keys.hasNext())
 		{
 			Object curr_key=keys.next();
 			UnsafeIteratorDfa curr_monitor=monitor_map.get(curr_key);
-			System.out.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
+			System.err.println("Iterator : "+curr_key.toString()+" total events : "+curr_monitor.dfa_event_counter+" total transitions : "+monitor_map.get(curr_key).dfa_transition+" || dfa :"+monitor_map.get(curr_key).dfa_name);
 
 		}
 		*/
-		System.out.println("------------------------------------------------------------------");	
-		System.out.println("Total dfa : "+monitor_map.size());
-		System.out.println("------------------------------------------------------------------");	
-		System.out.println("Universal map : " + Universe.size());
+		System.err.println("------------------------------------------------------------------");	
+		System.err.println("Total dfa : "+monitor_map.size());
+		System.err.println("------------------------------------------------------------------");	
+		System.err.println("Universal map : " + Universe.size());
 	}
 
 }
