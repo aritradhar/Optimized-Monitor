@@ -25,6 +25,8 @@ public class BatchDriverClass_bloat
 				String fName = f.getAbsoluteFile().toString().substring(44);
 				if(fName.contains(".class"))
 				{
+					if(fName.contains("CompactArrayInitializer") || fName.contains("ClassHierarchy"))
+						continue;
 					fName = fName.replace(".class", "");
 					fName = fName.replaceAll("\\\\", ".");
 					System.out.println(fName);

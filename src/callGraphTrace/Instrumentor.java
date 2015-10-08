@@ -55,6 +55,8 @@ public class Instrumentor extends BodyTransformer
 	protected void internalTransform(Body body, String phaseName, Map options) 
 	{
 		String methodName = body.getMethod().getSignature();
+		if(methodName.contains("typeToSet"))
+			return;
 		//try {
 			//BatchDriverClass_pmd.fw.append("Method name : " + body.getMethod() + "\n");
 		//} catch (IOException e) {
