@@ -532,7 +532,7 @@ public aspect UnsafeIterMonitorAspect
 
 				if(called_state==3)
 				{
-					System.err.println("Unsafe Iterator usage. Final event secquence : "+counter);
+					System.err.println("Unsafe Iterator usage. Final event secquence : "+ counter);
 					final_printer();
 				}
 				//end of monitor modification		
