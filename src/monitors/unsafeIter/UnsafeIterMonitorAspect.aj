@@ -359,7 +359,7 @@ public aspect UnsafeIterMonitorAspect
 
 
 	@SuppressWarnings("rawtypes")
-	pointcut UnsafeIterator_updatesource1(Collection c) : ((call(* Collection+.remove*(..)) || call(* Collection+.add*(..)) || call(* Collection+.put*(..))) && target(c)) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !adviceexecution();
+	pointcut UnsafeIterator_updatesource1(Collection c) : ((call(* Collection+.remove*(..)) || call(* Collection+.add*(..)) || call(* Collection+.put*(..))) && target(c)) && !within(UnsafeIteratorDfa) && !within(UnsafeIterMonitorAspect) && !within(EDU.purdue.cs.bloat.trans.CompactArrayInitializer) && !adviceexecution();
 	@SuppressWarnings("rawtypes")
 	before (Collection c) : UnsafeIterator_updatesource1(c) 
 	{
@@ -417,9 +417,13 @@ public aspect UnsafeIterMonitorAspect
 					while(it.hasNext())
 					{
 						Object key=it.next();
-						if(one_Map.get(key).equals(c))
+						
+						synchronized (this) 
 						{
+							if(one_Map.get(key).equals(c))
+							{
 							key_ret.add(key);
+							}
 						}
 					}
 				}

@@ -1,0 +1,10 @@
+<aspectj>
+<aspects>
+<aspect name="monitors.unsafeIter.UnsafeIterMonitorAspectOriginal"/>
+</aspects>
+<weaver options="-verbose -debug">
+<exclude within="EDU.purdue.cs.bloat.trans.CompactArrayInitializer"/>
+		</weaver>
+		
+</aspectj>
+
