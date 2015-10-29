@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
+import DS.MethodId;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.PatchingChain;
@@ -55,17 +56,12 @@ public class InstrumentorNew extends BodyTransformer
 	protected void internalTransform(Body body, String phaseName, Map options) 
 	{
 		String methodName = body.getMethod().getSignature();
-		if(methodName.contains("typeToSet"))
-			return;
-		//try {
-			//BatchDriverClass_pmd.fw.append("Method name : " + body.getMethod() + "\n");
-		//} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
 		
-		//if(body.getMethod().getName().contains("isOnLeftHandSide"))
-			//return;
+		MethodId.addNewMethod(methodName);
+		
+		
+		//if(methodName.contains("typeToSet"))
+		//	return;
 		
 		System.out.println("Method name : " + body.getMethod());
 		
