@@ -57,8 +57,7 @@ public class InstrumentorNew extends BodyTransformer
 	{
 		String methodName = body.getMethod().getSignature();
 		
-		MethodId.addNewMethod(methodName);
-		
+		long methodId = MethodId.getId(methodName);
 		
 		//if(methodName.contains("typeToSet"))
 		//	return;

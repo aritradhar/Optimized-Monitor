@@ -13,28 +13,20 @@
 //*************************************************************************************
 
 
-package DS;
+package callGraphTrace;
 
-import java.util.HashMap;
-
-public class MethodId {
-
-	//method name -> unique id
-	public static HashMap<String, Long> method_id_map = new HashMap<>();
+public class MethodTraceData {
 	
-	public static void addNewMethod(String methodName)
-	{
-		if(!method_id_map.containsKey(methodName))
-		{
-			method_id_map.put(methodName, (long) method_id_map.size() + 1);
-		}
-	}
+	public static long trace;
 	
-	public static long getId(String methodName)
+	public static void addTrace(long methodId)
 	{
-		if(!method_id_map.containsKey(methodName))
-			MethodId.addNewMethod(methodName);
+		if(trace == 0)
+			trace = methodId;
 		
-		return method_id_map.get(methodName);
+		else
+		{
+			trace = (trace << 20 ) & 0xfffffff;
+		}
 	}
 }
