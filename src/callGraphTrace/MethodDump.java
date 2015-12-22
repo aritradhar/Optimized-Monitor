@@ -2,6 +2,7 @@ package callGraphTrace;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -37,7 +38,6 @@ import soot.jimple.StringConstant;
 public class MethodDump extends BodyTransformer
 {
 
-
 	/* (non-Javadoc)
 	 * @see soot.BodyTransformer#internalTransform(soot.Body, java.lang.String, java.util.Map)
 	 */
@@ -52,14 +52,9 @@ public class MethodDump extends BodyTransformer
 		//exclude constructors
 		if(body.getMethod().getName().startsWith("<"))
 			return;
-
-		//System.out.println(body);
-		PatchingChain<Unit> pc =  body.getUnits();
-		Iterator<Unit> it = pc.snapshotIterator();
 		
-		//pc.addFirst(st);
-		
-		body.validate();
+		if(!BatchDriverClass_bloat_methodDump.hm.containsKey(methodName))
+			BatchDriverClass_bloat_methodDump.hm.put(methodName, ++BatchDriverClass_bloat_methodDump.counter);
 	}
 	
 }
