@@ -47,10 +47,11 @@ public class MethodDump extends BodyTransformer
 	{
 		String methodName = body.getMethod().getSignature();
 		
+		
 		System.out.println("Method name : " + body.getMethod());
 		
 		//exclude constructors
-		if(body.getMethod().getName().startsWith("<"))
+		if(body.getMethod().isConstructor())
 			return;
 		
 		if(!BatchDriverClass_bloat_methodDump.hm.containsKey(methodName))

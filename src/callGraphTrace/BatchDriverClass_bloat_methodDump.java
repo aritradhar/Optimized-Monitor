@@ -14,7 +14,7 @@ public class BatchDriverClass_bloat_methodDump
 
 	public static HashMap<String, Integer> hm = new HashMap<>();
 	public static int counter = 0;
-	
+
 	public static void walk( String path ) {
 
 		File root = new File( path );
@@ -51,11 +51,11 @@ public class BatchDriverClass_bloat_methodDump
 			System.exit(0);
 		}*/
 		walk("bin\\EDU");
-		
+
 
 		for(String s : files)
 		{
-			String[] ar = {s};
+			String[] ar = {s};			
 			System.err.println("Instrumenting : " + s);
 			Options.v().set_soot_classpath("C:\\Users\\Aritra\\workspace\\CGTrace\\bin");				
 			Options.v().set_prepend_classpath(true);
@@ -66,14 +66,14 @@ public class BatchDriverClass_bloat_methodDump
 			G.reset();
 			System.out.println("-------------------------------------------------------------");
 		}
-		
+
 		FileWriter fw = new FileWriter("MethodList.txt");
-		
+
 		for(String method : BatchDriverClass_bloat_methodDump.hm.keySet())
 		{
 			fw.append(method + "|" + BatchDriverClass_bloat_methodDump.hm.get(method) + "\n");
 		}
-		
+
 		fw.close();
 	}
 
