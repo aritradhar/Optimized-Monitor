@@ -47,7 +47,7 @@ public class FailTest
 		System.out.println("The size of set_container is " + 
 							set_container.size() + 
 							" and the size of iter_container is " + iter_container.size());
-		//System.exit(0);
+		System.exit(0);
 	}
 	
 }

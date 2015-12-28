@@ -31,8 +31,8 @@ public class BatchDriverClass_bloat_methodDump
 				String fName = f.getAbsoluteFile().toString().substring(44);
 				if(fName.contains(".class"))
 				{
-					if(fName.contains("CompactArrayInitializer") || fName.contains("ClassHierarchy"))
-						continue;
+					//if(fName.contains("CompactArrayInitializer") || fName.contains("ClassHierarchy"))
+					//	continue;
 					fName = fName.replace(".class", "");
 					fName = fName.replaceAll("\\\\", ".");
 					System.out.println(fName);
@@ -45,6 +45,8 @@ public class BatchDriverClass_bloat_methodDump
 
 	public static void main(String[] args) throws IOException
 	{
+		
+		long start = System.currentTimeMillis();
 		/*if(args.length == 0)
 		{
 			System.err.println("Usage: java MainDriver[options] classname");
@@ -62,7 +64,18 @@ public class BatchDriverClass_bloat_methodDump
 			Options.v().setPhaseOption("jb", "use-original-names:true");
 			Pack jtp = PackManager.v().getPack("jtp");
 			jtp.add(new Transform("jtp.instrumenter",new MethodDump()));
-			soot.Main.main(ar);
+			try
+			{
+				soot.Main.main(ar);
+			}
+			catch(Exception ex)
+			{
+				System.err.println("Exception happed in " + s);
+				G.reset();
+				System.out.println("-------------------------------------------------------------");
+				continue;
+			}
+			
 			G.reset();
 			System.out.println("-------------------------------------------------------------");
 		}
@@ -75,6 +88,10 @@ public class BatchDriverClass_bloat_methodDump
 		}
 
 		fw.close();
+		
+		long end = System.currentTimeMillis();
+		
+		System.out.println("Total time taken : " + (end - start) + " ms.");
 	}
 
 }

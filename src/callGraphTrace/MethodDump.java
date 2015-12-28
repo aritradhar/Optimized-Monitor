@@ -47,7 +47,6 @@ public class MethodDump extends BodyTransformer
 	{
 		String methodName = body.getMethod().getSignature();
 		
-		
 		System.out.println("Method name : " + body.getMethod());
 		
 		//exclude constructors

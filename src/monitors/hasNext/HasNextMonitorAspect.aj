@@ -29,7 +29,7 @@ public aspect HasNextMonitorAspect
 	
 	static volatile String trace = null;
 	
-	static volatile int creation_counter = 0, next_counter = 0;
+	static volatile int has_next_counter = 0, next_counter = 0;
 	
 	static List makeList()
 	{
@@ -44,7 +44,7 @@ public aspect HasNextMonitorAspect
 	&& !within(HasNextMonitor) && !within(HasNextMonitorAspect) && !adviceexecution();
 	after (Iterator i) : HasNext_hasnext1(i) 
 	{
-		creation_counter++;
+		has_next_counter++;
 		
 		if(trace !=null)
 		{
@@ -118,7 +118,7 @@ public aspect HasNextMonitorAspect
 	before () : UnsafeIterator_exit1() 
 	{
 
-		System.out.println("Creation event : " + creation_counter);
+		System.out.println("HasNext event : " + has_next_counter);
 		System.out.println("Next event : " + next_counter);
 		System.out.println("------------------------------------------------------------------");	
 		System.out.println("Total dfa : "+i_m_map.size());
